@@ -142,6 +142,7 @@ export class AjaxAdapter {
       },
       response => {
         var responseInput = new HttpResponse(response, requestInfo.zConfig);
+        if (!response.json) { requestInfo.error(responseInput); return; }
         response.json()
           .then(x => {
             responseInput.data = x;
@@ -152,7 +153,6 @@ export class AjaxAdapter {
             requestInfo.error(responseInput)
           });
       });
-
   }
 }
 
