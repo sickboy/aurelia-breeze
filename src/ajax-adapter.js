@@ -11,6 +11,10 @@ export class HttpResponse {
   }
 
   getHeader(headerName) {
+    return this.getHeaders(headerName);
+  }
+  
+  getHeaders(headerName) {
     if (headerName === null || headerName === undefined || headerName === '') {
       return this.headers.headers;
     }
