@@ -146,7 +146,7 @@ export class AjaxAdapter {
       },
       response => {
         var responseInput = new HttpResponse(response, requestInfo.zConfig);
-        if (!response.json) { requestInfo.error(responseInput); return; }
+        if (!response.json) { responseInput.error = response; requestInfo.error(responseInput); return; }
         response.json()
           .then(x => {
             responseInput.data = x;
