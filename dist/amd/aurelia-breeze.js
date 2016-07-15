@@ -54,6 +54,10 @@ define(['exports', 'breeze-client', 'aurelia-binding', 'aurelia-fetch-client'], 
     }
 
     HttpResponse.prototype.getHeader = function getHeader(headerName) {
+      return this.getHeaders(headerName);
+    };
+
+    HttpResponse.prototype.getHeaders = function getHeaders(headerName) {
       if (headerName === null || headerName === undefined || headerName === '') {
         return this.headers.headers;
       }
@@ -168,6 +172,9 @@ define(['exports', 'breeze-client', 'aurelia-binding', 'aurelia-fetch-client'], 
         });
       }, function (response) {
         var responseInput = new HttpResponse(response, requestInfo.zConfig);
+        if (!response.json) {
+          responseInput.error = response;requestInfo.error(responseInput);return;
+        }
         response.json().then(function (x) {
           responseInput.data = x;
           requestInfo.error(responseInput);

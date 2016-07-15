@@ -1,6 +1,8 @@
 'use strict';
 
 System.register(['breeze-client', 'aurelia-binding', 'aurelia-fetch-client'], function (_export, _context) {
+  "use strict";
+
   var breeze, subscriberCollection, ObserverLocator, HttpClient, _dec, _class, _createClass, extend, HttpResponse, AjaxAdapter, Q, Deferred, BreezePropertyObserver, BreezeObjectObserver, BreezeObservationAdapter;
 
   function _classCallCheck(instance, Constructor) {
@@ -140,6 +142,10 @@ System.register(['breeze-client', 'aurelia-binding', 'aurelia-fetch-client'], fu
         }
 
         HttpResponse.prototype.getHeader = function getHeader(headerName) {
+          return this.getHeaders(headerName);
+        };
+
+        HttpResponse.prototype.getHeaders = function getHeaders(headerName) {
           if (headerName === null || headerName === undefined || headerName === '') {
             return this.headers.headers;
           }
@@ -224,6 +230,9 @@ System.register(['breeze-client', 'aurelia-binding', 'aurelia-fetch-client'], fu
             });
           }, function (response) {
             var responseInput = new HttpResponse(response, requestInfo.zConfig);
+            if (!response.json) {
+              responseInput.error = response;requestInfo.error(responseInput);return;
+            }
             response.json().then(function (x) {
               responseInput.data = x;
               requestInfo.error(responseInput);

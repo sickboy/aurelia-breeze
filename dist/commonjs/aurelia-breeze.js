@@ -36,6 +36,10 @@ var HttpResponse = exports.HttpResponse = function () {
   }
 
   HttpResponse.prototype.getHeader = function getHeader(headerName) {
+    return this.getHeaders(headerName);
+  };
+
+  HttpResponse.prototype.getHeaders = function getHeaders(headerName) {
     if (headerName === null || headerName === undefined || headerName === '') {
       return this.headers.headers;
     }
@@ -150,6 +154,9 @@ var AjaxAdapter = exports.AjaxAdapter = function () {
       });
     }, function (response) {
       var responseInput = new HttpResponse(response, requestInfo.zConfig);
+      if (!response.json) {
+        responseInput.error = response;requestInfo.error(responseInput);return;
+      }
       response.json().then(function (x) {
         responseInput.data = x;
         requestInfo.error(responseInput);

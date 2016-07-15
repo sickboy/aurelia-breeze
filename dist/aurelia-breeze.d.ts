@@ -10,6 +10,7 @@ declare module 'aurelia-breeze' {
   export class HttpResponse {
     constructor(aureliaResponse: any, config: any);
     getHeader(headerName: any): any;
+    getHeaders(headerName: any): any;
   }
   export class AjaxAdapter {
     constructor();

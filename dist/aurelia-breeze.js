@@ -13,6 +13,10 @@ export class HttpResponse {
   }
 
   getHeader(headerName) {
+    return this.getHeaders(headerName);
+  }
+  
+  getHeaders(headerName) {
     if (headerName === null || headerName === undefined || headerName === '') {
       return this.headers.headers;
     }
@@ -144,6 +148,7 @@ export class AjaxAdapter {
       },
       response => {
         var responseInput = new HttpResponse(response, requestInfo.zConfig);
+        if (!response.json) { responseInput.error = response; requestInfo.error(responseInput); return; }
         response.json()
           .then(x => {
             responseInput.data = x;
@@ -154,7 +159,6 @@ export class AjaxAdapter {
             requestInfo.error(responseInput)
           });
       });
-
   }
 }
 
